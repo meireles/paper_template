@@ -1,0 +1,11 @@
+; DO NOT EDIT (unless you know what you are doing)
+;
+; This subdirectory is a git "subrepo", and this file is maintained by the
+; git-subrepo command. See https://github.com/git-commands/git-subrepo#readme
+;
+[subrepo]
+	remote = https://bitbucket.org/meireles/bibtexlib
+	branch = master
+	commit = 13f5d86419ad94bfadb075cd81aa75a320f8b4db
+	parent = 5838f22c985664c324cb19ac503ccf35de59d66d
+	cmdver = 0.3.0
