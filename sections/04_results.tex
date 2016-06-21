@@ -1,0 +1,20 @@
+\documentclass[../main.tex]{article}
+
+\begin{document}
+
+\section{Results}
+
+All the 10 acorns treated by Billy geminated whereas only 2 untreated acorn 
+geminated (Table ~\ref{tab:acorns}).
+
+
+\begin{table}[ht!]
+\centering
+\DTLloadrawdb{acorns}{./tables/acorns.csv}
+\DTLdisplaydb{acorns}
+\caption{Number of treatment and control acorns geminated in a common garden.}
+\label{tab:acorns}
+\end{table}
+
+
+\end{document}

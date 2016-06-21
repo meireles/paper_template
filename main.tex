@@ -1,0 +1,97 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Preamble
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\documentclass[11pt, final]{article}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Looks
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Page geometry
+\usepackage[a4paper,text={16.0cm,25.2cm}, centering]{geometry}
+
+% Font optimization
+\usepackage{microtype}
+
+% Section headings size and spacing
+\usepackage[compact,small]{titlesec}
+
+% Paragraphs
+\setlength{\parskip}{1.2ex}     % with spaces
+%\setlength{\parindent}{0em}    % no indentation
+
+% Prevent "orphans and widows".
+% Values taken from Rob Hyndman: \clubpenalty = 10000 and \widowpenalty = 10000
+\clubpenalty = 10000
+\widowpenalty = 10000
+
+% Ensures that floats (figures and tables) are within their section
+\usepackage[section]{placeins}
+
+% Take care of fonts in pdflatex
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}       
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Useful packages
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage{amsmath, amssymb}    % Math
+\usepackage{authblk}             % Multi author block
+\usepackage{subfiles}            % Multi-file document
+\usepackage{todonotes}           % To-do side notes
+\usepackage{siunitx}             % SI units
+\usepackage{datatool}            % Read csv tables
+\usepackage{booktabs}            % Pimp up tables
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Figures
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage{graphicx}
+\graphicspath{ {figures/} {../figures/} }    % two paths to work with `subfiles`
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% References
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage[backend=biber, style=authoryear]{biblatex}
+\addbibresource{references/bibtexlib/library.bib}
+\addbibresource{references/quick_fix_bibtexlib/quick_fix_lib.bib}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Custom commands
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% overwrite datatool dtldisplay... with booktabs' lines
+\renewcommand{\dtldisplaystarttab}{\toprule}
+\renewcommand{\dtldisplayafterhead}{\midrule}
+\renewcommand{\dtldisplayendtab}{\\\bottomrule}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Manuscript
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\title{Alligators increase acorn germination rates}
+
+\author[1*]{Jose Eduardo Meireles}
+\affil[1]{Ecology, Evolution, and Behavior, University of Minnesota}
+\affil[*]{meireles@umn.edu}
+
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\subfile{sections/01_abstract}	
+\subfile{sections/02_introduction}
+\subfile{sections/03_methods}
+\subfile{sections/04_results}
+\subfile{sections/05_discussion}
+
+\printbibliography
+
+\subfile{sections/06_appendix}
+
+\end{document}
