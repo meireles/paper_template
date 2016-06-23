@@ -7,16 +7,17 @@ meireles@umn.edu
 General template for my academic papers. Its main features are:
 
 1. Using git for version control.
-2. Tapping on my centralized bibliography repo [`bibtexlib`](https://bitbucket.org/meireles/bibtexlib).
+2. Tapping into my centralized bibliography repo [`bibtexlib`](https://github.com/meireles/bibtexlib).
 3. Compatibility with the online collaborative TeX platform [Overleaf](https://www.overleaf.com/).
-4. Embedding it in git controlled R projects (using `git subtree`). [EXAMPLE TODO]
+4. Embedding it in git controlled R projects; see [research\_project\_template](https://github.com/meireles/research_project_template) and  [scifi](https://github.com/meireles/scifi).
 
 
 #### Catches
-The workflow around this template relies heavily on *intermediate* level git:
+The workflow around this template relies heavily on third party git tools:
 
-1. [`bibtexlib`](https://bitbucket.org/meireles/bibtexlib) is embedded using non-standard git commands in [`git subrepo`](https://github.com/ingydotnet/git-subrepo).
-2. Nesting forks of this template in my R project repo relies on `git subtree`.
+1. [`bibtexlib`](https://github.com/meireles/bibtexlib) is embedded using non-standard git commands in [`git subrepo`](https://github.com/ingydotnet/git-subrepo).
+
+2. Embeding this template in an R project template relies on [scifi](https://github.com/meireles/scifi) and on [git-utils](https://github.com/meireles/git-utils).
 
 ## Structure
 
@@ -26,16 +27,23 @@ The workflow around this template relies heavily on *intermediate* level git:
 
 * __figures:__ Should be **the only** directory holding the images that go into the manuscript.
 
-* __tables:__ Houses all the `.csv` files to be rendered as tables in the manuscript.
+* __tables:__ Houses **all** `.csv` files to be rendered as tables in the manuscript.
 
 * __references__ Should be the **only** directory sourced for bibtex `.bib` libraries. It is divided into two sub-directories:
 
-  * [__bibtexlib:__](https://bitbucket.org/meireles/bibtexlib) A [`git subrepo`](https://github.com/ingydotnet/git-subrepo) of my centralized bibliography repository. This repo __evolves slowly__, and __shouldn't be written to__ from a `paper_template` clone / fork like this.
+  * [__bibtexlib:__](https://github.com/meireles/bibtexlib) A [`git subrepo`](https://github.com/ingydotnet/git-subrepo) of my centralized bibliography repository. This repo __evolves slowly__, and __shouldn't be written to__ from a `paper_template` instance (at least not very often).
 
   * __quick\_fix\_bibtexlib__: A manuscript specific `.bib` that can be changed in whatever way I want. Complements `bibtexlib` since it it less restrictive and faster evolving.
 
+## Workflows
 
-## Workflow
+This is a template and thus is meant to be instantiated. There are two ways I do this: 1) instantiaing it inside a research project like [scifi](https://github.com/meireles/scifi) (99% of the time), or 2) intantiating it directly, by 'forking' and cloning.
+
+### Workflow 1 (preferred)
+
+Really nothing to do here. I simply instantiate my [research\_project\_template](https://github.com/meireles/research_project_template) using [scifi](https://github.com/meireles/scifi), and I have an R project set up with my manuscript inside. **If** I choose to use overleaf with it, the [scifi](https://github.com/meireles/scifi) instantiated project will have a `init-overleaf` script that helps to set things up.
+
+### Workflow 2 (rarely used)
 
 ### 1. Basic set up
 
@@ -51,7 +59,7 @@ origin	https://meireles@bitbucket.org/meireles/my_paper.git (push)
 Meireles:my_paper Meireles$ git subrepo status --all
 1 subrepo:
 Git subrepo 'references/bibtexlib':
-  Remote URL:      https://bitbucket.org/meireles/bibtexlib
+  Remote URL:      https://github.com/meireles/bibtexlib
   Tracking Branch: master
   Pulled Commit:   c6b2712
   Pull Parent:     6e27c16
@@ -99,7 +107,7 @@ git subrepo pull references/bibtexlib/
 
 In principle, **I will avoid** making changes to `bibtexlib` from a `paper_template` fork.
 
-If these changes in `subrepos` happen though, I can push them to [bibtexlib](https://bitbucket.org/meireles/bibtexlib) with:
+If these changes in `subrepos` happen though, I can push them to [bibtexlib](https://github.com/meireles/bibtexlib) with:
 
 ```
 git subrepo push references/bibtexlib/
@@ -109,9 +117,9 @@ git subrepo push references/bibtexlib/
 
 ## Sausage factory: Adding `bibtexlib` as a subrepo 
 
-This just documents how I added [`bibtexlib`](https://bitbucket.org/meireles/bibtexlib) as a subrepo to this project.
+This just documents how I added [`bibtexlib`](https://github.com/meireles/bibtexlib) as a subrepo to this project.
 
 1. Installed [git-subrepo](https://github.com/ingydotnet/git-subrepo).
-2. `git subrepo clone https://bitbucket.org/meireles/bibtexlib references/bibtexlib`
+2. `git subrepo clone https://github.com/meireles/bibtexlib references/bibtexlib`
 
 And that's it! Much easier than _submodules_ or _subtrees_.
