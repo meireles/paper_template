@@ -1,78 +1,146 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Preamble
+%%% Preamble
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%% Document class
 \documentclass[11pt, final]{article}
 
+%%% Page geometry
+\usepackage[a4paper, text={16.0cm,25.2cm}, centering]{geometry}
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Looks
+%%% Looks
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-% Page geometry
-\usepackage[a4paper,text={16.0cm,25.2cm}, centering]{geometry}
+%%%%%%%%%%%%%%%%%%%%%%%
+%%% Encoding and Font 
+%%%%%%%%%%%%%%%%%%%%%%%
 
-% Font optimization
+%%% Language
+\usepackage[english]{babel}
+
+%%% Font optimization
 \usepackage{microtype}
 
-% Section headings size and spacing
+%%% Take care of encodings and fonts in **pdflatex**
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+
+%%%%%%%%%%%%%%%%%%%%%%%
+%%% Layout
+%%%%%%%%%%%%%%%%%%%%%%%
+
+%%% Section headings size and spacing
 \usepackage[compact,small]{titlesec}
 
-% Paragraphs
-\setlength{\parskip}{1.2ex}     % with spaces
-%\setlength{\parindent}{0em}    % no indentation
+%%% Paragraphs
+%\setlength{\parskip}{1.2ex}     %%% with spaces
+%\setlength{\parindent}{0em}     %%% no indentation
 
-% Prevent "orphans and widows".
-% Values taken from Rob Hyndman: \clubpenalty = 10000 and \widowpenalty = 10000
+%%% Prevent "orphans and widows".
+%%% Values taken from Rob Hyndman: \clubpenalty = 10000 and \widowpenalty = 10000
 \clubpenalty = 10000
 \widowpenalty = 10000
 
-% Ensures that floats (figures and tables) are within their section
+%%% Ensures that floats (figures and tables) are within their section
 \usepackage[section]{placeins}
 
-% Take care of fonts in pdflatex
-\usepackage[utf8]{inputenc}
-\usepackage[T1]{fontenc}
-\usepackage{lmodern}       
+%%% Line spacing
+%%% Options: {\singlespacing, \one­half­s­pac­ing, \doublespacing}
+\usepackage{setspace}
+\doublespacing
+
+%%% Add lines number
+\usepackage{lineno}
+\linenumbers
+
+%%% Discourage hyphenation by making hyphens very expensive.
+\hyphenpenalty=10000
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Useful packages
+%%% Useful packages
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\usepackage{amsmath, amssymb}    % Math
-\usepackage{authblk}             % Multi author block
-\usepackage{subfiles}            % Multi-file document
-\usepackage{todonotes}           % To-do side notes
-\usepackage{siunitx}             % SI units
-\usepackage{datatool}            % Read csv tables
-\usepackage{booktabs}            % Pimp up tables
+\usepackage{amsmath, amssymb}    %%% Math
+\usepackage{authblk}             %%% Multi author block
+\usepackage{subfiles}            %%% Multi-file document
+\usepackage{todonotes}           %%% To-do side notes
+\usepackage{siunitx}             %%% SI units
+\usepackage{datatool}            %%% Read csv tables
+\usepackage{booktabs}            %%% Pimp up tables
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Figures
+%%% Figures
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%% Possible to two paths to work with `subfiles`
 \usepackage{graphicx}
-\graphicspath{ {figures/} {../figures/} }    % two paths to work with `subfiles`
+\graphicspath{ {figures/} {../figures/} }
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% References
+%%% References
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\usepackage[backend=biber, style=authoryear]{biblatex}
+
+%%%%%%%%%%%%%%%%%%%%%%%
+%%% Biblatex
+%%%%%%%%%%%%%%%%%%%%%%%
+
+%%% Initial options.
+%%% More options include: {bibstyle=<custom_style.bbx>}
+\usepackage[backend=biber,       %%% generally preferable
+            style=authoryear,    %%% Bibliography style
+            natbib=true,         %%% accept natbib comands
+            hyperref=true,       %%% use hyper references
+            url=false,           %%%
+            isbn=false,          %%%
+            uniquelist=false,    %%%
+            maxcitenames=2,      %%% Citation: **MAX** author names
+            minbibnames=1,       %%% Bibliography: **MIN** author names
+            maxbibnames=25,      %%% Bibliography: **MIN** author names
+            dashed=false         %%% Bibliography: Always write out the author name instead of using a dash.
+            ]{biblatex}
+
+%%% Bibliographic databases
 \addbibresource{references/bibtexlib/library.bib}
 \addbibresource{references/quick_fix_bibtexlib/quick_fix_lib.bib}
 
+%%% Remove a field from the .bib file
+%%% Some of these can be assigned in the init options above.
+%\AtEveryBibitem{\clearfield{url}}
+%\AtEveryBibitem{\clearfield{doi}}
+%\AtEveryBibitem{\clearfield{issn}}
+%\AtEveryBibitem{\clearfield{arXiv}}
+
+%%%%%%%%%%%%%%%%%%%%%%%
+%%% Natbib
+%%%%%%%%%%%%%%%%%%%%%%%
+
+%%% In case a .bst file is available for the style I want.
+%%% There is also the makebst program that helps creating a custom style
+
+%\usepackage{natbib}
+%\bibliographystyle{ecography.bst}
+%\bibpunct{(}{)}{,}{a}{}{,}
+
+%%% Create aliases for citation commands if they are in biblatex style
+%\let\parencite\citep
+%\let\textcite\citet
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Custom commands
+%%% Custom commands
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-% overwrite datatool dtldisplay... with booktabs' lines
+%%% overwrite datatool dtldisplay... with booktabs' lines
 \renewcommand{\dtldisplaystarttab}{\toprule}
 \renewcommand{\dtldisplayafterhead}{\midrule}
 \renewcommand{\dtldisplayendtab}{\\\bottomrule}
 
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Manuscript
+%%% Manuscript
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\title{Alligators increase acorn germination rates}
+\title{Title}
 
 \author[1*]{Jose Eduardo Meireles}
 \affil[1]{Ecology, Evolution, and Behavior, University of Minnesota}
@@ -90,7 +158,10 @@
 \subfile{sections/04_results}
 \subfile{sections/05_discussion}
 
+%%% If biblatex
 \printbibliography
+%%% If bibtex / natbib
+%\bibliography{references/bibtexlib/library, references/quick_fix_bibtexlib/quick_fix_lib}
 
 \subfile{sections/06_appendix}
 
