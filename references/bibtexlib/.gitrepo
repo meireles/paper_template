@@ -6,6 +6,6 @@
 [subrepo]
 	remote = https://github.com/meireles/bibtexlib
 	branch = master
-	commit = be4e5ed10936db861a93f1e1d83d7656e37bcdd1
-	parent = 10e6b6de88ba1a4f002c042878aa0be8ea17defa
-	cmdver = 0.4.0
+	commit = 8823d09f50c441ecbfa046f7b002ef68b09818ea
+	parent = 0a9aa282242d4bbb725ae664b8de4a820feb0009
+	cmdver = 0.3.0
