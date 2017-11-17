@@ -12,12 +12,8 @@
 %%% Looks
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-%%%%%%%%%%%%%%%%%%%%%%%
-%%% Encoding and Font 
-%%%%%%%%%%%%%%%%%%%%%%%
-
 %%% Language
-\usepackage[english]{babel}
+\usepackage[american]{babel}
 
 %%% Font optimization
 \usepackage{microtype}
@@ -58,6 +54,9 @@
 %%% Discourage hyphenation by making hyphens very expensive.
 \hyphenpenalty=10000
 
+% Vary font size of specific columns inside a table
+\usepackage{array}
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%% Useful packages
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -73,9 +72,8 @@
 %%% Figures
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-%%% Possible to two paths to work with `subfiles`
 \usepackage{graphicx}
-\graphicspath{ {figures/} {../figures/} }
+\graphicspath{ {figures/} }
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%% References
@@ -84,6 +82,9 @@
 %%%%%%%%%%%%%%%%%%%%%%%
 %%% Biblatex
 %%%%%%%%%%%%%%%%%%%%%%%
+
+%%% \usepackage{csquotes}  % required by biblatex-apa
+
 
 %%% Initial options.
 %%% More options include: {bibstyle=<custom_style.bbx>}
@@ -102,6 +103,9 @@
 
 %%% Bibliographic databases
 \addbibresource{references/bibtexlib/library.bib}
+
+%%% \DeclareLanguageMapping{american}{american-apa}  % required by biblatex-apa
+
 
 %%% Remove a field from the .bib file
 %%% Some of these can be assigned in the init options above.
@@ -135,6 +139,11 @@
 \renewcommand{\dtldisplayafterhead}{\midrule}
 \renewcommand{\dtldisplayendtab}{\\\bottomrule}
 
+%%% Customized line spacing in todo lists
+%%% from: http://tug.ctan.org/macros/latex/contrib/todonotes/todonotes.pdf
+\newcommand{\tinytodo}[2][]{\todo[caption={#2}, size=\small, #1]{\renewcommand{\baselinestretch}{1.0}\selectfont#2\par}}
+
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%% Manuscript
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -151,17 +160,56 @@
 
 \maketitle
 
-\subfile{sections/01_abstract}	
-\subfile{sections/02_introduction}
-\subfile{sections/03_methods}
-\subfile{sections/04_results}
-\subfile{sections/05_discussion}
+\begin{abstract}
+
+My abstract
+
+\end{abstract}
+
+
+\section{Introduction}
+
+A citation \citep{CavenderBares2027}. And a figure \ref{fig:billy}.
+
+\begin{figure}[ht!]
+\includegraphics[width=0.4\textwidth]{billy.pdf}
+\centering	
+\caption{Picture}
+\label{fig:billy}
+\end{figure}
+
+\section{Methods}
+
+My Methods
+
+
+\section{Results}
+
+A table ~\ref{tab:acorns}).
+
+\begin{table}[ht!]
+\centering
+\DTLloadrawdb{acorns}{./tables/acorns.csv}
+\DTLdisplaydb{acorns}
+\caption{Number of treatment and control acorns geminated in a common garden.}
+\label{tab:acorns}
+\end{table}
+
+
+\section{Discussion}
+
+My discussion
+
+
+
 
 %%% If biblatex
 \printbibliography
 %%% If bibtex / natbib
 %\bibliography{references/bibtexlib/library, references/quick_fix_bibtexlib/quick_fix_lib}
 
-\subfile{sections/06_appendix}
+\section{Appendix}
+
+My supplement.
 
 \end{document}

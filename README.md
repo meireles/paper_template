@@ -2,18 +2,18 @@
 
 meireles@umn.edu
 
----
+--
 
 General template for my academic papers. Its main features are:
 
-1. Using git for version control.
-2. Tapping into my centralized bibliography repo [`bibtexlib`](https://github.com/meireles/bibtexlib).
-3. Compatibility with the online collaborative TeX platform [Overleaf](https://www.overleaf.com/).
-4. Embedding it in git controlled R projects; see [research\_project\_template](https://github.com/meireles/research_project_template) and  [scifi](https://github.com/meireles/scifi).
+1. Uses git for version control;
+2. Taps into my centralized bibliography repo [`bibtexlib`](https://github.com/meireles/bibtexlib).
+3. Is compatible with the online collaborative TeX platform [Overleaf](https://www.overleaf.com/).
+4. Can be embedded into git controlled R projects; see [research\_project\_template](https://github.com/meireles/research_project_template) and  [scifi](https://github.com/meireles/scifi).
 
 
 #### Catches
-The workflow around this template relies heavily on third party git tools:
+The workflow relies heavily on third party git tools:
 
 1. [`bibtexlib`](https://github.com/meireles/bibtexlib) is embedded using non-standard git commands in [`git subrepo`](https://github.com/ingydotnet/git-subrepo).
 
@@ -22,8 +22,6 @@ The workflow around this template relies heavily on third party git tools:
 ## Structure
 
 * __main.tex:__ Manuscript backbone. This is where I **1)** define a preamble, **2)** write title, author list, print references, and **3)** import the manuscript sections that live inside the sections directory.
-
-* __sections:__ Has a `.tex` document for each manuscript section, e.g., `02_introduction.tex`, `04_results.tex`, etc. Files are numbered to aid navigation.
 
 * __figures:__ Should be **the only** directory holding the images that go into the manuscript.
 
@@ -123,3 +121,4 @@ This just documents how I added [`bibtexlib`](https://github.com/meireles/bibtex
 2. `git subrepo clone https://github.com/meireles/bibtexlib references/bibtexlib`
 
 And that's it! Much easier than _submodules_ or _subtrees_.
+ 
