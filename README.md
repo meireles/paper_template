@@ -17,11 +17,11 @@ The workflow relies heavily on third party git tools:
 
 1. [`bibtexlib`](https://github.com/meireles/bibtexlib) is embedded using non-standard git commands in [`git subrepo`](https://github.com/ingydotnet/git-subrepo).
 
-2. Embeding this template in an R project template relies on [scifi](https://github.com/meireles/scifi) and on [git-utils](https://github.com/meireles/git-utils).
+2. Embedding this template in an R project template relies on [scifi](https://github.com/meireles/scifi) and on [git-utils](https://github.com/meireles/git-utils).
 
 ## Structure
 
-* __main.tex:__ Manuscript backbone. This is where I **1)** define a preamble, **2)** write title, author list, print references, and **3)** import the manuscript sections that live inside the sections directory.
+* __main.tex:__ Manuscript itself.
 
 * __figures:__ Should be **the only** directory holding the images that go into the manuscript.
 
@@ -31,11 +31,11 @@ The workflow relies heavily on third party git tools:
 
   * [__bibtexlib:__](https://github.com/meireles/bibtexlib) A [`git subrepo`](https://github.com/ingydotnet/git-subrepo) of my centralized bibliography repository. This repo __evolves slowly__, and __shouldn't be written to__ from a `paper_template` instance (at least not very often).
 
-  * __quick\_fix\_bibtexlib__: A manuscript specific `.bib` that can be changed in whatever way I want. Complements `bibtexlib` since it it less restrictive and faster evolving.
+* __.misctmp__ hidden directory used for temporary files. For example, the word counting macros write files to it. 
 
 ## Workflows
 
-This is a template and thus is meant to be instantiated. There are two ways I do this: 1) instantiaing it inside a research project like [scifi](https://github.com/meireles/scifi) (99% of the time), or 2) intantiating it directly, by 'forking' and cloning.
+This is a template and thus is meant to be instantiated. There are two ways I do this: 1) instantiating it inside a research project like [scifi](https://github.com/meireles/scifi) (99% of the time), or 2) instantiating  it directly, by 'forking' and cloning.
 
 ### Workflow 1 (preferred)
 
@@ -66,7 +66,7 @@ Git subrepo 'references/bibtexlib':
 ### 2. Add repo to Overleaf (optional)
 
 1. Log in to [Overleaf](https://www.overleaf.com/) and create a new **blank** project. I'll call it `my_paper`.
-2. By default Overleaf adds a `main.tex` with a basic outlines to you project. __Make sure to delete the contents of `main.tex`__, otherwise I'll have to resolve a conflict when trying to `git pull`.
+2. By default Overleaf adds a `main.tex` with a basic outlines to you project. __Make sure to delete the contents of `main.tex`__, otherwise you'll have to resolve a conflict when trying to `git pull`.
 3. Get the git link <overleaf_git_link> from the `Share` menu.
 4. Set up Overleaf (see code below)
     1. Add Overleaf as a remote for `my_paper`. Name the remote `overleaf`!
@@ -88,8 +88,7 @@ git push overleaf master                     # Now just push it!
 1. The cycle of `pull`, write, `commit`, `push` happens normally, __without worrying about the `subrepo`.__
 2. If Overleaf is set up, remember that:
     1. I'll have two remotes to `push` and `pull` from!
-    2. Overleaf makes `commits` from their web interface when you snapshot a version. Great feature!
-3. For quick bibliography hacks, __use the `quick_fix_bibtexlib` directory!__
+    2. Overleaf creates `commits` from their web interface when you snapshot a version -- so you need to remember to `pull` changes!
 
 ### 4. Updating your local `bibtexlib`.
 
@@ -99,7 +98,7 @@ To pull changes made to the remote `bibtexlib`, run the following (at `my_paper`
 git subrepo pull references/bibtexlib/
 ```
 
-**Caution:** I'll have to watch out for updates in bibtex tags. A change from `meireles2016` to `meireles2016a` can mess up my manuscript.
+**Caution:** Must watch out for updates in bibtex tags. A change from `meireles2016` to `meireles2016a` can mess up my manuscript.
 
 ### 5. Pushing local changes to `bibtexlib`!
 
@@ -121,4 +120,3 @@ This just documents how I added [`bibtexlib`](https://github.com/meireles/bibtex
 2. `git subrepo clone https://github.com/meireles/bibtexlib references/bibtexlib`
 
 And that's it! Much easier than _submodules_ or _subtrees_.
- 
