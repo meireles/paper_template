@@ -6,7 +6,7 @@
 \documentclass[11pt, final]{article}
 
 %%% Page geometry
-\usepackage[a4paper, text={16.0cm,25.2cm}, centering]{geometry}
+\usepackage[letterpaper, centering]{geometry}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%% Looks
@@ -31,8 +31,8 @@
 \usepackage[compact,small]{titlesec}
 
 %%% Paragraphs
-%\setlength{\parskip}{1.2ex}     %%% with spaces
-%\setlength{\parindent}{0em}     %%% no indentation
+\setlength{\parskip}{1.5ex}      % Paragraph spacing
+\setlength{\parindent}{1.5em}    % Paragraph indentation
 
 %%% Prevent "orphans and widows".
 %%% Values taken from Rob Hyndman: \clubpenalty = 10000 and \widowpenalty = 10000
@@ -57,6 +57,9 @@
 % Vary font size of specific columns inside a table
 \usepackage{array}
 
+% Ensures that floats (figures and tables) are within their section
+\usepackage[section]{placeins}
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%% Useful packages
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -67,6 +70,10 @@
 \usepackage{siunitx}             %%% SI units
 \usepackage{datatool}            %%% Read csv tables
 \usepackage{booktabs}            %%% Pimp up tables
+\usepackage[normalem]{ulem}      %%% strikethrough and underline
+\usepackage{xcolor}              %%% color
+\usepackage{soul}                %&& highlight text. OLD
+\usepackage{etoolbox}            %&& set up complex booleans and command patching
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%% Figures
@@ -84,13 +91,14 @@
 %%%%%%%%%%%%%%%%%%%%%%%
 
 %%% \usepackage{csquotes}  % required by biblatex-apa
+%%% \DeclareLanguageMapping{american}{american-apa}  % required by biblatex-apa
 
 
 %%% Initial options.
 %%% More options include: {bibstyle=<custom_style.bbx>}
 \usepackage[backend=biber,       %%% generally preferable
             style=authoryear,    %%% Bibliography style
-            natbib=true,         %%% accept natbib comands
+            natbib=true,         %%% accept natbib commands
             hyperref=true,       %%% use hyper references
             url=false,           %%%
             isbn=false,          %%%
@@ -103,9 +111,6 @@
 
 %%% Bibliographic databases
 \addbibresource{references/bibtexlib/library.bib}
-
-%%% \DeclareLanguageMapping{american}{american-apa}  % required by biblatex-apa
-
 
 %%% Remove a field from the .bib file
 %%% Some of these can be assigned in the init options above.
@@ -129,19 +134,133 @@
 %\let\parencite\citep
 %\let\textcite\citet
 
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Add lines number
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage{lineno}
+\linenumbers
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%% Custom commands
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Overwrite abstract title command
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-%%% overwrite datatool dtldisplay... with booktabs' lines
+% (Large font size)
+\renewcommand\abstractname{\large Abstract}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Update table lines
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% overwrite datatool dtldisplay... with booktabs' lines
 \renewcommand{\dtldisplaystarttab}{\toprule}
 \renewcommand{\dtldisplayafterhead}{\midrule}
 \renewcommand{\dtldisplayendtab}{\\\bottomrule}
 
-%%% Customized line spacing in todo lists
-%%% from: http://tug.ctan.org/macros/latex/contrib/todonotes/todonotes.pdf
-\newcommand{\tinytodo}[2][]{\todo[caption={#2}, size=\small, #1]{\renewcommand{\baselinestretch}{1.0}\selectfont#2\par}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% ToDo Comments
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Customized line spacing in todo lists
+% from: http://tug.ctan.org/macros/latex/contrib/todonotes/todonotes.pdf
+\newcommand{\tinytodo}[2][]{\todo[caption={#2}, size=\footnotesize, #1]{\renewcommand{\baselinestretch}{1.0}\selectfont#2\par}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Mark manual edits
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%% Commands: 
+%% -- cut[comment]{old_txt}
+%% -- replace[comment]{old_txt}{new_txt}
+%% -- add[comment]{new_txt}
+
+%% Cut
+\newcounter{cut}
+\newcommand{\cut}[2][]{%
+  \refstepcounter{cut}%
+  {\setstretch{0.75}%
+  \ifboolexpr{test { \ifblank{#1} }}%
+  {}%
+  {\todo[color={red!70}, size=\footnotesize]{\textbf{[Cut\thecut]:} \textit{#1}}{}}%
+  \textcolor{red}{\sout{#2}}%
+  }%
+}
+
+%% Replace
+\newcounter{replace}
+\newcommand{\replace}[3][]{%
+  \refstepcounter{replace}%
+  {\setstretch{0.75}%
+  \ifboolexpr{test { \ifblank{#1} }}%
+  {}%
+  {\todo[color={purple!70}, size=\footnotesize]{\textbf{[Rpl\thereplace]:} \textit{#1}}{}}%
+  \textcolor{blue}{#3}\textcolor{red}{\sout{#2}}%
+  }%
+}
+
+%% Add
+\newcounter{add}
+\newcommand{\add}[2][]{%
+  \refstepcounter{add}%
+  {\setstretch{0.75}%
+  \ifboolexpr{test { \ifblank{#1} }}%
+  {}%
+  {\todo[color={blue!70}, size=\footnotesize]{\textbf{[Add\theadd]:} \textit{#1}}{}}%
+  \textcolor{blue}{#2}%
+  }%
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Word count
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%% Word count by section
+%% 
+%% Macros based on the two following examples:
+%% -1- https://tex.stackexchange.com/questions/44618/dynamically-count-and-return-number-of-words-in-a-section#44626
+%% -2- https://www.overleaf.com/14827105vcjvrvwpbbwb#/56458926/
+%% -3- %https://tex.stackexchange.com/questions/353936/dynamic-word-count-for-abstract-environment-in-latex-using-knitr-sweave-rstudio
+
+%% Example -2- defines the "\detailtexcount" command, from which we 
+%% can extract tons of info
+
+%%%%%%%%%%%%%%%%%%%%
+% Detailed
+%%%%%%%%%%%%%%%%%%%%
+\newcommand{\wordcountdetailed}{%
+  \immediate\write18{texcount -merge -sum -incbib -dir \jobname.tex > \jobname.wcdetail}%
+  \verbatiminput{\jobname.wcdetail}%
+}
+
+%%%%%%%%%%%%%%%%%%%%
+% For sections
+%%%%%%%%%%%%%%%%%%%%
+\newcommand{\wordcountsection}{%
+  \immediate\write18{texcount -merge -sum -incbib -dir \jobname.tex | grep "Section" | sed -e 's/+.*//' | sed -n \thesection p > '.misctmp/sectionwordcount.txt'}%
+\hfill \fcolorbox{black}{orange!70}{%
+   \textit{Section} {\thesection}
+   \textit{word count} \textbf{: \input{.misctmp/sectionwordcount.txt}}}%
+ }
+
+%%%%%%%%%%%%%%%%%%%%
+% Detailed
+%%%%%%%%%%%%%%%%%%%%
+
+%% Must have a separate counter for the abstract environment
+%% See example -3- (link above)
+
+%TC:newcounter abst Words in abstract
+%TC:envir abstract [] abst
+
+\newcommand{\wordcountabstract}{%
+  \immediate\write18{texcount -merge -sum -incbib -template="{abst}" -dir \jobname.tex > '.misctmp/abswordcount.txt'}%
+\hfill \fcolorbox{black}{orange!70}{%
+   \textit{Abstract word count}\textbf{: \input{.misctmp/abswordcount.txt}}}%
+ }
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -164,12 +283,14 @@
 
 My abstract
 
+\wordcountabstract
+
 \end{abstract}
 
 
 \section{Introduction}
 
-A citation \citep{CavenderBares2027}. And a figure \ref{fig:billy}.
+A citation \citep{Losos2009}. And a figure \ref{fig:billy}. Something \replace[JEM: replaced a stupid word]{dumb}{smart}. 
 
 \begin{figure}[ht!]
 \includegraphics[width=0.4\textwidth]{billy.pdf}
@@ -178,10 +299,13 @@ A citation \citep{CavenderBares2027}. And a figure \ref{fig:billy}.
 \label{fig:billy}
 \end{figure}
 
+\wordcountsection
+
 \section{Methods}
 
 My Methods
 
+\wordcountsection
 
 \section{Results}
 
@@ -200,13 +324,12 @@ A table ~\ref{tab:acorns}).
 
 My discussion
 
-
-
+\wordcountsection
 
 %%% If biblatex
 \printbibliography
 %%% If bibtex / natbib
-%\bibliography{references/bibtexlib/library, references/quick_fix_bibtexlib/quick_fix_lib}
+%\bibliography{references/bibtexlib/library}
 
 \section{Appendix}
 
